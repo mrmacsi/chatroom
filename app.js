@@ -24,7 +24,6 @@ io.on("connection", function (socket) {
 		return socket.emit("chat:allmsgs", MESSAGES)
 	});
 
-
 	socket.on("user:login", function (data) {
 		try {
 			var username	= data.username;
