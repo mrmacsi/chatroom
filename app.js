@@ -9,7 +9,6 @@ var db				= require('./db');
 var port			= 2222;
 var MESSAGES		= [];
 
-
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':true}));
