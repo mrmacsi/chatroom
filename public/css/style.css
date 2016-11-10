@@ -1,0 +1,43 @@
+/*
+* Name: BustAbet
+* Started: 03/16/2016
+* Created by Ozgur
+*/
+
+body {font-size: 15px; line-height: 25px; color: #444;}
+a {color: #d07a00; text-decoration: none;}
+
+input, button, select, .text-input {}
+.wrap {max-width: 1180px; margin: auto;}
+
+@media only screen and (max-width: 1180px) {
+   .wrap {padding: 0 1px;}
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.t:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.t { display: inline-block; }
+/* start commented backslash hack \*/
+* html .t { height: 1%; }
+.t { display: block; }
+/* close commented backslash hack */
+
+*:focus {
+    outline: none
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}

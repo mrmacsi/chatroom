@@ -1,0 +1,13 @@
+<!-- messages -->
+<div style="background-color: #CCC;padding: 10px;">
+
+	<div style="width: 400px;height: 200px;">
+		<div ng-repeat="m in ctrl.MESSAGES">
+			<strong>{{m.username}}</strong>: {{m.text}}
+		</div>
+	</div>
+
+	<input class="input" type="text" ng-model="ctrl.text">
+	<button class="button is-primary" ng-click="ctrl.send()">send</button>
+
+</div>

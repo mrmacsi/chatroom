@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+	<title>Chat</title>
+
+	<link rel="stylesheet" type="text/css" href="/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/bulma.css">
+
+	<script type="text/javascript" src="/js/common/socket.io.js"></script>
+	<script type="text/javascript" src="/js/common/angular.js"></script>
+	<script type="text/javascript" src="/js/common/angular.route.js"></script>
+	<script type="text/javascript" src="/js/common/angular.sanitize.js"></script>
+	<script type="text/javascript" src="/js/common/angular.cookies.js"></script>
+	<script type="text/javascript" src="/js/common/socket.js"></script>
+	<script type="text/javascript" src="/js/app.js"></script>
+	<script type="text/javascript" src="/js/services.js"></script>
+	<script type="text/javascript" src="/js/controllers.js"></script>
+	<script type="text/javascript" src="/js/directives.js"></script>
+
+	<script type="text/javascript">
+
+
+		/* for location.path */
+		app.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+			var original = $location.path;
+			$location.path = function (path, reload) {
+				if (reload === false) {
+					var lastRoute = $route.current;
+					var un = $rootScope.$on('$locationChangeSuccess', function () {
+						$route.current = lastRoute;
+						un();
+					});
+				}
+				return original.apply($location, [path]);
+			};
+		}]);
+
+		app.config(function($routeProvider){
+
+			$routeProvider
+					.when('/',{
+						templateUrl: '/partial/main.html',
+						controller: 'MainCtrl',
+						controllerAs: 'ctrl',
+						resolve: privatePage ()
+					})
+					.when('/login',{
+						templateUrl: '/partial/login.html',
+						controller: 'UserCtrl',
+						controllerAs: 'ctrl',
+						resolve: loginPage()
+					})
+					.when('/register',{
+						templateUrl: '/partial/register.html',
+						controller: 'UserCtrl',
+						controllerAs: 'ctrl',
+						resolve: loginPage()
+					})
+					.when('/exit',{
+						templateUrl: '/partial/login.html',
+						controller: 'UserCtrl',
+						controllerAs: 'ctrl',
+						resolve: logOut()
+					})
+					.otherwise({
+						template: '<h1>Page not found</h1>'
+					})
+
+		});
+
+		function privatePage() {
+			return [function  (SessionService, $location) {
+				if(!SessionService.isLogged) {
+					$location.path("/login")
+				}
+			}]
+		}
+
+		function loginPage() {
+			return [function  (SessionService, $location) {
+				if(SessionService.isLogged) {
+					$location.path("/")
+				}
+			}]
+		}
+
+		function logOut() {
+			return [function  (SessionService, $location) {
+				if(SessionService.isLogged) {
+					SessionService.deleteToken();
+					$location.path("/");
+				}
+			}]
+		}
+
+	</script>
+
+
+</head>
+<body style="width:600px;margin:auto;margin-top: 10px;">
+
+<nav class="navbar navbar-light bg-faded">
+	<ul class="nav navbar-nav">
+
+		<li class="nav-item">
+			<a class="nav-link" href="#/">Home</a>
+		</li>
+
+		<li class="nav-item">
+			<a class="nav-link" href="#/register">Register</a>
+		</li>
+
+		<li class="nav-item">
+			<a class="nav-link" href="#/login">Login</a>
+		</li>
+
+
+		<li class="nav-item">
+			<a class="nav-link" href="#/exit">Exit</a>
+		</li>
+
+	</ul>
+</nav>
+
+<ng-view></ng-view>
+</body>
+</html>
+
+
